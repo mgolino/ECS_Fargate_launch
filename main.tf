@@ -64,7 +64,7 @@ resource "aws_iam_role_policy" "ecs_secrets_access" {
 # --------------------------------------------------------------------------------------
 # Create a VPC
 resource "aws_vpc" "ecs_vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/22"
   tags = {
     Name = "ecs-fargate-vpc"
   }
@@ -74,7 +74,7 @@ resource "aws_vpc" "ecs_vpc" {
 resource "aws_subnet" "private" {
   count             = 2  # Number of subnets
   vpc_id            = aws_vpc.ecs_vpc.id
-  cidr_block        = cidrsubnet(aws_vpc.ecs_vpc.cidr_block, 8, count.index)
+  cidr_block        = cidrsubnet(aws_vpc.ecs_vpc.cidr_block, 2, count.index)
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
   tags = {
